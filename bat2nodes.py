@@ -49,8 +49,8 @@ if not options['socket']:
 
 db = NodeDB(int(time.time()))
 
-bm = batman(mesh_interface)
-db.parse_vis_data(bm.vis_data(options['socket']))
+bm = batman(options['socket'],options['mesh'])
+db.parse_vis_data(bm.vis_data())
 for gw in bm.gateway_list():
   db.mark_gateway(gw)
 
