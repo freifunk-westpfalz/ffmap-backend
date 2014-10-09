@@ -21,6 +21,7 @@ class D3MapBuilder:
                         'batman_version': x.batman,
                         'uptime': x.uptime,
                         'gateway': x.gateway,
+                        'lastseen': x.lastseen,
                         'flags': x.flags,
                         'clientcount': x.clientcount
                        } for x in nodes]
