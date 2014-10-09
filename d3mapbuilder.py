@@ -14,7 +14,13 @@ class D3MapBuilder:
 
     output['nodes'] = [{'name': x.name, 'id': x.id,
                         'geo': [float(x) for x in x.gps.split(" ")] if x.gps else None,
+                        'hardware': x.hardware,
                         'firmware': x.firmware,
+                        'autoupdater_state': x.autoupdater_state,
+                        'autoupdater_branch': x.autoupdater_branch,
+                        'batman_version': x.batman,
+                        'uptime': x.uptime,
+                        'gateway': x.gateway,
                         'flags': x.flags,
                         'clientcount': x.clientcount
                        } for x in nodes]

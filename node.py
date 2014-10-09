@@ -9,7 +9,13 @@ class Node():
       "gateway": False,
     })
     self.gps = None
+    self.hardware = None
     self.firmware = None
+    self.autoupdater_state = None
+    self.autoupdater_branch = None
+    self.batman = None
+    self.uptime = None
+    self.gateway = None
     self.clientcount = 0
     self.lastseen = 0
     self.firstseen = 0

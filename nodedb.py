@@ -30,9 +30,17 @@ class NodeDB:
     for node in self._nodes:
       obj.append({ 'id': node.id
                  , 'name': node.name
+                 , 'clientcount': node.clientcount
                  , 'lastseen': node.lastseen
                  , 'firstseen': node.firstseen
                  , 'geo': node.gps
+                 , 'hardware': node.hardware
+                 , 'firmware': node.firmware
+                 , 'autoupdater_state': node.autoupdater_state
+                 , 'autoupdater_branch': node.autoupdater_branch
+                 , 'batman': node.batman
+                 , 'uptime': node.uptime
+                 , 'gateway': node.gateway
                  })
 
     with open(filename, "w") as f:
@@ -52,6 +60,11 @@ class NodeDB:
             node.name = n['name']
             node.lastseen = n['lastseen']
             node.gps = n['geo']
+            node.hardware = n['hardware']
+            node.firmware = n['firmware']
+            node.autoupdater_state = n['autoupdater_state']
+            node.autoupdater_branch = n['autoupdater_branch']
+            node.batman = n['batman']
             self._nodes.append(node)
 
           if 'firstseen' in n:
@@ -171,14 +184,8 @@ class NodeDB:
         try:
           node = self.maybe_node_by_mac((x['router'], ))
           node.add_mac(x['gateway'])
-          node.clientcount += 1
         except:
           pass
-
-    # don't count node as its own client
-    for node in self._nodes:
-      if node.clientcount > 0:
-        node.clientcount -= 1
 
   def reduce_links(self):
     tmp_links = defaultdict(list)
@@ -216,14 +223,35 @@ class NodeDB:
       if 'name' in alias:
         node.name = alias['name']
 
+      if 'clientcount' in alias:
+        node.clientcount = alias['clientcount']
+
       if 'vpn' in alias and alias['vpn'] and mac and node.interfaces and mac in node.interfaces:
         node.interfaces[mac].vpn = True
 
       if 'gps' in alias:
         node.gps = alias['gps']
 
+      if 'hardware' in alias:
+        node.hardware = alias['hardware']
+
       if 'firmware' in alias:
         node.firmware = alias['firmware']
+
+      if 'autoupdater_state' in alias:
+        node.autoupdater_state = alias['autoupdater_state']
+
+      if 'autoupdater_branch' in alias:
+        node.autoupdater_branch = alias['autoupdater_branch']
+
+      if 'batman' in alias:
+        node.batman = alias['batman']
+
+      if 'uptime' in alias:
+        node.uptime = alias['uptime']
+
+      if 'gateway' in alias:
+        node.gateway = alias['gateway']
 
       if 'id' in alias:
         node.id = alias['id']
