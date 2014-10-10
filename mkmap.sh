@@ -10,4 +10,4 @@ export PATH=/home/admin/bin:$PATH
 
 cd "$(dirname "$0")"/
 
-./bat2nodes.py -a aliases-mz.json -m mzBAT -s /var/run/alfred-mz.sock -d $DEST
+./bat2nodes.py -a aliases-mz.json -m mzBAT -s /var/run/alfred-mz.sock -f 0.1 -d $DEST

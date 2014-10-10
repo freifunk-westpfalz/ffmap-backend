@@ -2,8 +2,9 @@ import json
 import datetime
 
 class D3MapBuilder:
-  def __init__(self, db):
+  def __init__(self, db, firmware):
     self._db = db
+    self.firmware = firmware
 
   def build(self):
     output = dict()
@@ -35,7 +36,8 @@ class D3MapBuilder:
                        } for x in links]
 
     output['meta'] = {
-                      'timestamp': now.isoformat()
+                      'timestamp': now.isoformat(),
+                      'gluon_release': str(self.firmware)
                      }
 
     return json.dumps(output)

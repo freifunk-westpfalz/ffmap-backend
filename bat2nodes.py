@@ -34,6 +34,9 @@ parser.add_argument('-m', '--mesh', action='store',
 parser.add_argument('-s', '--socket', action='store',
                   help='alfred socket')
 
+parser.add_argument('-f', '--firmware', action='store',
+                  help='current firmware')
+
 parser.add_argument('-d', '--destination-directory', action='store',
                   help='destination directory for generated files',required=True)
 
@@ -46,6 +49,9 @@ if not options['mesh']:
 
 if not options['socket']:
   options['socket'] = ['/var/run/alfred.sock']
+
+if not options['firmware']:
+  options['firmware'] = None
 
 db = NodeDB(int(time.time()))
 
@@ -70,7 +76,7 @@ db.dump_state("state.json")
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 
-m = D3MapBuilder(db)
+m = D3MapBuilder(db,options['firmware'])
 
 #Write nodes json
 nodes_json = open(options['destination_directory'] + '/nodes.json.new','w')
