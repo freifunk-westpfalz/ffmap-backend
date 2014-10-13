@@ -62,6 +62,10 @@ class alfred:
       except:
         pass
 
+      try:
+        node_alias['addresses'] = node['network']['addresses']
+      except:
+        pass
 
       try:
         node_alias['id'] = node['network']['mac']

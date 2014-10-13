@@ -16,6 +16,7 @@ class Node():
     self.batman = None
     self.uptime = None
     self.gateway = None
+    self.addresses = None
     self.clientcount = 0
     self.lastseen = 0
     self.firstseen = 0

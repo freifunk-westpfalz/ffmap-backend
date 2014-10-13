@@ -41,6 +41,7 @@ class NodeDB:
                  , 'batman': node.batman
                  , 'uptime': node.uptime
                  , 'gateway': node.gateway
+                 , 'addresses': node.addresses
                  })
 
     with open(filename, "w") as f:
@@ -65,6 +66,7 @@ class NodeDB:
             node.autoupdater_state = n['autoupdater_state']
             node.autoupdater_branch = n['autoupdater_branch']
             node.batman = n['batman']
+            node.addresses = n['addresses']
             self._nodes.append(node)
 
           if 'firstseen' in n:
@@ -252,6 +254,9 @@ class NodeDB:
 
       if 'gateway' in alias:
         node.gateway = alias['gateway']
+
+      if 'addresses' in alias:
+        node.addresses = alias['addresses']
 
       if 'id' in alias:
         node.id = alias['id']

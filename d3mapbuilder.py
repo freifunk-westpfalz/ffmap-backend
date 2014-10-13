@@ -22,6 +22,7 @@ class D3MapBuilder:
                         'batman_version': x.batman,
                         'uptime': x.uptime,
                         'gateway': x.gateway,
+                        'addresses': x.addresses,
                         'lastseen': x.lastseen,
                         'flags': x.flags,
                         'clientcount': x.clientcount
