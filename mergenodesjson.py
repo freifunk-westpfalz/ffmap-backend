@@ -13,18 +13,25 @@ def writeout(filename, content):
 
 if __name__ == '__main__':
     p = ArgumentParser(prog='mergenodesjson', description='merge two ffmap nodes.jsons together', epilog='-.-')
-    p.add_argument('left', action='store', help='left nodes.json')
-    p.add_argument('right', action='store', help='right nodes.json')
-    p.add_argument('out', action='store', help='write merged result into file')
+    p.add_argument('input', action='store', nargs='*', help='input jsons (use many!)')
+    p.add_argument('output', action='store', help='output json')
     p = p.parse_args()
 
     res = {'meta': dict(), 'nodes': list(), 'links': list()}
+    o = 0
 
-    for c in [p.left, p.right]:
+    for c in p.input:
 
         j = readin(c)
         res['meta'].update(j['meta'])
         res['nodes'] += j['nodes']
-        res['links'] += j['links']
 
-    writeout(p.out, res)
+        [x.update({
+            'source': x['source'] + o,
+            'target': x['target'] + o
+        }) for x in j['links']]
+        # pointer fun with blinky!
+        res['links'] += j['links']
+        o += len(res['nodes'])
+
+    writeout(p.output, res)
