@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 import subprocess
 import json
+import jq
 
 class alfred:
-  def __init__(self,request_data_type = 158):
-    self.request_data_type = request_data_type
+  def __init__(self,socket):
+    self.socket = socket
 
   def aliases(self):
-    output = subprocess.check_output(["alfred-json","-r",str(self.request_data_type),"-f","json","-z"])
-    alfred_data = json.loads(output.decode("utf-8"))
+    output_data = subprocess.check_output(["alfred-json","-s",self.socket,"-r","158","-f","json","-z"])
+    output_stats = subprocess.check_output(["alfred-json","-s",self.socket,"-r","159","-f","json","-z"])
+    alfred_data = json.loads(output_data.decode("utf-8"))
+    alfred_stats = json.loads(output_stats.decode("utf-8"))
+    alfred_all = jq.jq(".[0] * .[1]").transform([alfred_data,alfred_stats])
     alias = {}
-    for mac,node in alfred_data.items():
+    for mac,node in alfred_all.items():
       node_alias = {}
       if 'location' in node:
         try:
@@ -21,6 +25,46 @@ class alfred:
       try:
         node_alias['firmware'] = node['software']['firmware']['release']
       except KeyError:
+        pass
+
+      try:
+        node_alias['clientcount'] = node['clients']['total']
+      except KeyError:
+        pass
+
+      try:
+        node_alias['hardware'] = node['hardware']['model']
+      except:
+        pass
+
+      try:
+        node_alias['autoupdater_state'] = node['software']['autoupdater']['enabled']
+      except:
+        pass
+
+      try:
+        node_alias['autoupdater_branch'] = node['software']['autoupdater']['branch']
+      except:
+        pass
+
+      try:
+        node_alias['uptime'] = str(node['uptime'])
+      except:
+        pass
+
+      try:
+        node_alias['batman'] = node['software']['batman-adv']['version']
+      except:
+        pass
+
+      try:
+        node_alias['gateway'] = node['gateway']
+      except:
+        pass
+
+      try:
+        node_alias['addresses'] = node['network']['addresses']
+      except:
         pass
 
       try:

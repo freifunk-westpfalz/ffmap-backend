@@ -6,13 +6,12 @@ import re
 class batman:
   """ Bindings for B.A.T.M.A.N. advanced batctl tool
   """
-  def __init__(self, mesh_interface = "bat0"):
+  def __init__(self,socket,mesh_interface):
+    self.socket = socket
     self.mesh_interface = mesh_interface
 
-  def vis_data(self,batadv_vis=False):
-    vds = self.vis_data_batctl_legacy()
-    if batadv_vis:
-        vds += self.vis_data_batadv_vis()
+  def vis_data(self):
+    vds = self.vis_data_batadv_vis()
     return vds
 
   def vis_data_helper(self,lines):
@@ -25,18 +24,10 @@ class batman:
         pass
     return vd
 
-  def vis_data_batctl_legacy(self):
-    """ Parse "batctl -m <mesh_interface> vd json -n" into an array of dictionaries.
-    """
-    output = subprocess.check_output(["batctl","-m",self.mesh_interface,"vd","json","-n"])
-    lines = output.splitlines()
-    vds = self.vis_data_helper(lines)
-    return vds
-
   def vis_data_batadv_vis(self):
-    """ Parse "batadv-vis -i <mesh_interface> -f json" into an array of dictionaries.
+    """ Parse "batadv-vis -u <alfred-socket> -i <mesh_interface> -f json" into an array of dictionaries.
     """
-    output = subprocess.check_output(["batadv-vis","-i",self.mesh_interface,"-f","json"])
+    output = subprocess.check_output(["batadv-vis","-u",self.socket,"-i",self.mesh_interface,"-f","json"])
     lines = output.splitlines()
     return self.vis_data_helper(lines)
 
