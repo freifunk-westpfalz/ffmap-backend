@@ -7,14 +7,30 @@ class alfred:
   def __init__(self,socket):
     self.socket = socket
 
+  def datastats(self):
+    if len(self.socket) > 1:
+      for i in range(len(self.socket)):
+        databucket = json.loads(subprocess.check_output(["alfred-json","-s",self.socket[i],"-r","158","-f","json","-z"]).decode("utf-8"))
+        statsbucket = json.loads(subprocess.check_output(["alfred-json","-s",self.socket[i],"-r","159","-f","json","-z"]).decode("utf-8"))
+
+        if i == 0:
+          output_data = databucket.copy()
+          output_stats = statsbucket.copy()
+        else:
+          output_data.update(databucket)
+          output_stats.update(statsbucket)
+    else:
+        output_data = json.loads(subprocess.check_output(["alfred-json","-s",self.socket[0],"-r","158","-f","json","-z"]).decode("utf-8"))
+        output_stats = json.loads(subprocess.check_output(["alfred-json","-s",self.socket[0],"-r","159","-f","json","-z"]).decode("utf-8"))
+
+    alfred_all = jq.jq(".[0] * .[1]").transform([output_data,output_stats])
+    return alfred_all
+
   def aliases(self):
-    output_data = subprocess.check_output(["alfred-json","-s",self.socket,"-r","158","-f","json","-z"])
-    output_stats = subprocess.check_output(["alfred-json","-s",self.socket,"-r","159","-f","json","-z"])
-    alfred_data = json.loads(output_data.decode("utf-8"))
-    alfred_stats = json.loads(output_stats.decode("utf-8"))
-    alfred_all = jq.jq(".[0] * .[1]").transform([alfred_data,alfred_stats])
+    alfred_data = self.datastats()
+
     alias = {}
-    for mac,node in alfred_all.items():
+    for mac,node in alfred_data.items():
       node_alias = {}
       if 'location' in node:
         try:

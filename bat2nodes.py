@@ -28,14 +28,17 @@ parser.add_argument('-a', '--aliases',
                   action='append',
                   metavar='FILE')
 
-parser.add_argument('-m', '--mesh', action='store',
+parser.add_argument('-m', '--mesh', action='append',
                   help='batman mesh interface')
 
-parser.add_argument('-s', '--socket', action='store',
-                  help='alfred socket')
+parser.add_argument('-s', '--socket', action='append',
+                  help='alfred sockets')
 
 parser.add_argument('-f', '--firmware', action='store',
                   help='current firmware')
+
+parser.add_argument('-c', '--community', action='store',
+                  help='unique name of community')
 
 parser.add_argument('-d', '--destination-directory', action='store',
                   help='destination directory for generated files',required=True)
@@ -53,6 +56,16 @@ if not options['socket']:
 if not options['firmware']:
   options['firmware'] = None
 
+if not options['community']:
+  options['community'] = None
+  statefile = "state.json"
+  nodesjson = "nodes.json"
+  rrddir = "/nodedb/"
+else:
+  statefile = 'state_' + options['community'] + '.json'
+  nodesjson = 'nodes_' + options['community'] + '.json'
+  rrddir = '/nodedb_' + options['community'] + '/'
+
 db = NodeDB(int(time.time()))
 
 bm = batman(options['socket'],options['mesh'])
@@ -67,25 +80,30 @@ if options['aliases']:
 af = alfred(options['socket'])
 db.import_aliases(af.aliases())
 
-db.load_state("state.json")
+db.load_state(statefile)
 
 # remove nodes that have been offline for more than 30 days
 db.prune_offline(time.time() - 30*86400)
 
-db.dump_state("state.json")
+db.dump_state(statefile)
 
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 
 m = D3MapBuilder(db,options['firmware'])
 
 #Write nodes json
-nodes_json = open(options['destination_directory'] + '/nodes.json.new','w')
+nodes_json = open(options['destination_directory'] + '/' + nodesjson + '.new','w')
 nodes_json.write(m.build())
 nodes_json.close()
 
 #Move to destination
-os.rename(options['destination_directory'] + '/nodes.json.new',options['destination_directory'] + '/nodes.json')
+os.rename(options['destination_directory'] + '/' + nodesjson + '.new',options['destination_directory'] + '/' + nodesjson)
 
-rrd = rrd(scriptdir +  "/nodedb/", options['destination_directory'] + "/nodes")
+try:
+    os.stat(scriptdir + rrddir)
+except:
+    os.mkdir(scriptdir + rrddir)
+
+rrd = rrd(scriptdir +  rrddir, options['destination_directory'] + "/nodes")
 rrd.update_database(db)
 rrd.update_images()
