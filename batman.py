@@ -51,10 +51,10 @@ class batman:
       if gw_mode['mode'] == 'server':
         gw.append(own_mac)
 
-    for line in lines:
-      gw_line = re.match(r"^(?:=>)? +([0-9a-f:]+) ", line)
-      if gw_line:
-        gw.append(gw_line.group(1))
+      for line in lines:
+        gw_line = re.match(r"^(?:=>)? +([0-9a-f:]+) ", line)
+        if gw_line:
+          gw.append(gw_line.group(1))
 
     return gw
 
