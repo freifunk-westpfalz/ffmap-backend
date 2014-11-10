@@ -97,7 +97,7 @@ nodes_json.write(m.build())
 nodes_json.close()
 
 #Move to destination
-os.rename(options['destination_directory'] + '/' + nodesjson + '.new',options['destination_directory'] + '/' + nodesjson)
+os.rename(options['destination_directory'] + '/' + nodesjson + '.new',options['destination_directory'] + '/' + 'nodes.json')
 
 try:
     os.stat(scriptdir + rrddir)
