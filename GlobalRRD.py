@@ -1,6 +1,7 @@
 import os
 import subprocess
 from RRD import RRD, DS, RRA
+import datetime
 
 now = datetime.datetime.now().strftime('%d.%m.%Y %H:%M')
 prettynow = now.replace(":", "\:")

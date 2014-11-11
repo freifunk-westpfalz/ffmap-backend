@@ -2,6 +2,10 @@ import os
 import subprocess
 from node import Node
 from RRD import RRD, DS, RRA
+import datetime
+
+now = datetime.datetime.now().strftime('%d.%m.%Y %H:%M')
+prettynow = now.replace(":", "\:")
 
 class NodeRRD(RRD):
     ds_list = [
@@ -53,5 +57,6 @@ class NodeRRD(RRD):
                 'AREA:c#0F0:up\\l',
                 'AREA:d#F00:down\\l',
                 'LINE1:c#00F:clients connected\\l',
+                'COMMENT:Last Update\: ' + prettynow + '\\r',
                 ]
         subprocess.check_output(args)
