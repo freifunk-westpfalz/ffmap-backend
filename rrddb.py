@@ -13,6 +13,8 @@ class rrd:
               , displayTimeGlobal30d = "30d"
               , displayTimeGlobal365d = "365d"
               , displayTimeNode = "1d"
+              , displayTimeNode7d = "7d"
+              , displayTimeNode30d = "30d"
               ):
     self.dbPath = databaseDirectory
     self.globalDb = GlobalRRD(self.dbPath)
@@ -21,6 +23,8 @@ class rrd:
     self.displayTimeGlobal30d = displayTimeGlobal30d
     self.displayTimeGlobal365d = displayTimeGlobal365d
     self.displayTimeNode = displayTimeNode
+    self.displayTimeNode7d = displayTimeNode7d
+    self.displayTimeNode30d = displayTimeNode30d
 
     self.currentTimeInt = (int(time.time())/60)*60
     self.currentTime    = str(self.currentTimeInt)
@@ -59,5 +63,9 @@ class rrd:
 
       nodeName = os.path.basename(fileName).split('.')
       if nodeName[1] == 'rrd' and not nodeName[0] == "nodes":
-        rrd = NodeRRD(os.path.join(self.dbPath, fileName))
-        rrd.graph(self.imagePath, self.displayTimeNode)
+        rrd1d = NodeRRD(os.path.join(self.dbPath, fileName))
+        rrd1d.graph(self.imagePath, self.displayTimeNode)
+        rrd7d = NodeRRD(os.path.join(self.dbPath, fileName))
+        rrd7d.graph(self.imagePath, self.displayTimeNode7d)
+        rrd30d = NodeRRD(os.path.join(self.dbPath, fileName))
+        rrd30d.graph(self.imagePath, self.displayTimeNode30d)

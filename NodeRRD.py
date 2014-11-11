@@ -13,6 +13,10 @@ class NodeRRD(RRD):
         RRA('AVERAGE', 0.5, 5, 1440),   #  5 days  of  5 minute samples
         RRA('AVERAGE', 0.5, 60, 720),   # 30 days  of  1 hour   samples
         RRA('AVERAGE', 0.5, 720, 730),  #  1 year  of 12 hour   samples
+        RRA('MAX', 0.5, 1, 120),    #  2 hours of  1 minute samples
+        RRA('MAX', 0.5, 5, 1440),   #  5 days  of  5 minute samples
+        RRA('MAX', 0.5, 60, 720),   # 30 days  of  1 hour   samples
+        RRA('MAX', 0.5, 720, 730),  #  1 year  of 12 hour   samples
     ]
 
     def __init__(self, filename, node = None):
@@ -25,10 +29,6 @@ class NodeRRD(RRD):
         super().__init__(filename)
         self.ensureSanity(self.ds_list, self.rra_list, step=60)
 
-    @property
-    def imagename(self):
-        return os.path.basename(self.filename).rsplit('.', 2)[0] + ".png"
-
     def update(self):
         super().update({'upstate': 1, 'clients': self.node.clientcount})
 
@@ -37,12 +37,15 @@ class NodeRRD(RRD):
         Create a graph in the given directory. The file will be named
         basename.png if the RRD file is named basename.rrd
         """
-        args = ['rrdtool','graph', os.path.join(directory, self.imagename),
+        imagename = os.path.basename(self.filename).rsplit('.', 2)[0] + "_" + timeframe + ".png"
+
+        args = ['rrdtool','graph', os.path.join(directory, imagename),
                 '-s', '-' + timeframe ,
                 '-w', '800',
                 '-h', '400',
                 '-l', '0',
                 '-y', '1:1',
+                '--watermark=' 'Freifunk MWU',
                 'DEF:clients=' + self.filename + ':clients:AVERAGE',
                 'VDEF:maxc=clients,MAXIMUM',
                 'CDEF:c=0,clients,ADDNAN',
