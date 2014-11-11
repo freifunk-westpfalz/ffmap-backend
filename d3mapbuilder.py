@@ -9,7 +9,7 @@ class D3MapBuilder:
   def build(self):
     output = dict()
 
-    now = datetime.datetime.utcnow().replace(microsecond=0)
+    now = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
     nodes = self._db.get_nodes()
 
@@ -37,7 +37,7 @@ class D3MapBuilder:
                        } for x in links]
 
     output['meta'] = {
-                      'timestamp': now.isoformat(),
+                      'timestamp': now,
                       'gluon_release': str(self.firmware)
                      }
 
