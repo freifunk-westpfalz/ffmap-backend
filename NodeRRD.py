@@ -41,7 +41,7 @@ class NodeRRD(RRD):
         Create a graph in the given directory. The file will be named
         basename.png if the RRD file is named basename.rrd
         """
-        imagename = os.path.basename(self.filename).rsplit('.', 2)[0] + "_" + timeframe + ".png"
+        imagename = os.path.basename(self.filename).rsplit('.', 2)[0] + ".png"
 
         args = ['rrdtool','graph', os.path.join(directory, imagename),
                 '-s', '-' + timeframe ,

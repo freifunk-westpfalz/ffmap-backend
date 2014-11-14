@@ -62,10 +62,11 @@ class rrd:
         continue
 
       nodeName = os.path.basename(fileName).split('.')
+
       if nodeName[1] == 'rrd' and not nodeName[0] == "nodes":
         rrd1d = NodeRRD(os.path.join(self.dbPath, fileName))
         rrd1d.graph(self.imagePath, self.displayTimeNode)
-        rrd7d = NodeRRD(os.path.join(self.dbPath, fileName))
-        rrd7d.graph(self.imagePath, self.displayTimeNode7d)
-        rrd30d = NodeRRD(os.path.join(self.dbPath, fileName))
-        rrd30d.graph(self.imagePath, self.displayTimeNode30d)
+#        rrd7d = NodeRRD(os.path.join(self.dbPath, fileName))
+#        rrd7d.graph(self.imagePath, self.displayTimeNode7d)
+#        rrd30d = NodeRRD(os.path.join(self.dbPath, fileName))
+#        rrd30d.graph(self.imagePath, self.displayTimeNode30d)
