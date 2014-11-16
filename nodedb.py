@@ -266,7 +266,7 @@ class NodeDB:
       node = self.maybe_node_by_mac((gateway, ))
       node.flags['gateway'] = True
     except KeyError:
-      print("WARNING: did not find gateway ", gateway, " in node list")
+      pass
 
   def update_vpn_links(self):
     changes = 1
