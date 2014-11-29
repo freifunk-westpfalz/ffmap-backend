@@ -37,14 +37,14 @@ class GlobalRRD(RRD):
                 '-w', '800',
                 '-h' '400',
                 '--watermark=' 'Freifunk MWU',
-                'DEF:nodes=' + self.filename + ':nodes:AVERAGE',
-                'LINE2:nodes#0066FF:nodes    ',
-                'GPRINT:nodes:AVERAGE:avg\: %2.0lf',
-                'GPRINT:nodes:MAX:max\: %2.0lf\\l',
                 'DEF:clients=' + self.filename + ':clients:AVERAGE',
                 'AREA:clients#33CC33:clients  ',
                 'GPRINT:clients:AVERAGE:avg\: %2.0lf',
                 'GPRINT:clients:MAX:max\: %2.0lf\\l',
+                'DEF:nodes=' + self.filename + ':nodes:AVERAGE',
+                'LINE2:nodes#0066FF:nodes    ',
+                'GPRINT:nodes:AVERAGE:avg\: %2.0lf',
+                'GPRINT:nodes:MAX:max\: %2.0lf\\l',
                 'COMMENT:Last Update\: ' + prettynow + '\\r',
         ]
         subprocess.check_output(args)
