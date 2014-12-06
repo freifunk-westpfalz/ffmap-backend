@@ -1,18 +1,18 @@
 {
    "02:00:0a:38:00:05" : {
-      "name" : "Hinterschinken (WI)",
+      "name" : "Hinterschinken",
       "vpn" : true,
       "firmware" : "Ubuntu",
       "hardware" : "x86"
    },
    "02:00:0a:38:00:07" : {
-      "name" : "Spinat (WI)",
+      "name" : "Spinat",
       "vpn" : true,
       "firmware" : "Ubuntu",
       "hardware" : "x86"
    },
    "02:00:0a:38:00:17" : {
-      "name" : "Lotuswurzel (WI)",
+      "name" : "Lotuswurzel",
       "vpn" : true,
       "firmware" : "Ubuntu",
       "hardware" : "x86"
