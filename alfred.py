@@ -40,12 +40,12 @@ class alfred:
 
       try:
         node_alias['firmware'] = node['software']['firmware']['release']
-      except KeyError:
+      except:
         pass
 
       try:
         node_alias['clientcount'] = node['clients']['total']
-      except KeyError:
+      except:
         pass
 
       try:
@@ -85,7 +85,7 @@ class alfred:
 
       try:
         node_alias['id'] = node['network']['mac']
-      except KeyError:
+      except:
         pass
 
       if 'hostname' in node:
