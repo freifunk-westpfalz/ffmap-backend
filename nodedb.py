@@ -44,8 +44,7 @@ class NodeDB:
                  , 'addresses': node.addresses
                  })
 
-    with open(filename, "w") as f:
-      json.dump(obj, f)
+    open(filename, "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
 
   # load persistent state from file
   def load_state(self, filename):
