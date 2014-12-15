@@ -21,4 +21,4 @@ for s in range(len(statefile)):
             obj.pop(i)
             break
 
-    open(statefile[s], "w").write( json.dumps(obj, indent=4, separators=(',', ': ')) )
+    open(statefile[s], "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
