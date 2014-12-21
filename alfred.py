@@ -1,33 +1,11 @@
 #!/usr/bin/env python3
 import subprocess
 import json
-
-def dict_merge(o, v):
-    '''
-    Recursively climbs through dictionaries and merges them together.
-
-    :param o: The first dictionary
-    :param v: The second dictionary
-    :returns: A dictionary (who would have guessed?)
-
-    .. note:: Make sure `o` & `v` are indeed dictionaries, bad things will happen otherwise!
-    '''
-
-    from copy import deepcopy as _deepcopy
-
-    if not isinstance(v, dict): return v
-    res = _deepcopy(o)
-    for key in v.keys():
-        if res.get(key) and isinstance(res[key], dict):
-            res[key] = dict_merge(res[key], v[key])
-        else:
-            res[key] = _deepcopy(v[key])
-    return res
+from photon.util.structures import dict_merge
 
 class alfred:
   def __init__(self,socket):
     self.socket = socket
-
 
   def datastats(self):
     if len(self.socket) > 1:
