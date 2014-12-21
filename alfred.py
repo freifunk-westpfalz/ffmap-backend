@@ -2,10 +2,6 @@
 import subprocess
 import json
 
-class alfred:
-  def __init__(self,socket):
-    self.socket = socket
-
 def dict_merge(o, v):
     '''
     Recursively climbs through dictionaries and merges them together.
@@ -27,6 +23,11 @@ def dict_merge(o, v):
         else:
             res[key] = _deepcopy(v[key])
     return res
+
+class alfred:
+  def __init__(self,socket):
+    self.socket = socket
+
 
   def datastats(self):
     if len(self.socket) > 1:
