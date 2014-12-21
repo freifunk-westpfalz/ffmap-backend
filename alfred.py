@@ -1,11 +1,32 @@
 #!/usr/bin/env python3
 import subprocess
 import json
-import jq
 
 class alfred:
   def __init__(self,socket):
     self.socket = socket
+
+def dict_merge(o, v):
+    '''
+    Recursively climbs through dictionaries and merges them together.
+
+    :param o: The first dictionary
+    :param v: The second dictionary
+    :returns: A dictionary (who would have guessed?)
+
+    .. note:: Make sure `o` & `v` are indeed dictionaries, bad things will happen otherwise!
+    '''
+
+    from copy import deepcopy as _deepcopy
+
+    if not isinstance(v, dict): return v
+    res = _deepcopy(o)
+    for key in v.keys():
+        if res.get(key) and isinstance(res[key], dict):
+            res[key] = dict_merge(res[key], v[key])
+        else:
+            res[key] = _deepcopy(v[key])
+    return res
 
   def datastats(self):
     if len(self.socket) > 1:
@@ -23,7 +44,7 @@ class alfred:
         output_data = json.loads(subprocess.check_output(["alfred-json","-s",self.socket[0],"-r","158","-f","json","-z"]).decode("utf-8"))
         output_stats = json.loads(subprocess.check_output(["alfred-json","-s",self.socket[0],"-r","159","-f","json","-z"]).decode("utf-8"))
 
-    alfred_all = jq.jq(".[0] * .[1]").transform([output_data,output_stats])
+    alfred_all = dict_merge(output_data,output_stats)
     return alfred_all
 
   def aliases(self):
