@@ -42,6 +42,7 @@ class NodeDB:
                  , 'uptime': node.uptime
                  , 'gateway': node.gateway
                  , 'addresses': node.addresses
+                 , 'group': node.group
                  })
 
     open(filename, "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
@@ -66,6 +67,7 @@ class NodeDB:
             node.autoupdater_branch = n['autoupdater_branch']
             node.batman = n['batman']
             node.addresses = n['addresses']
+            node.group = n['group']
             self._nodes.append(node)
 
           if 'firstseen' in n:
@@ -259,6 +261,9 @@ class NodeDB:
 
       if 'id' in alias:
         node.id = alias['id']
+
+      if 'group' in alias:
+        node.group = alias['group']
 
   def mark_gateway(self, gateway):
     try:

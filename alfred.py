@@ -88,6 +88,11 @@ class alfred:
       except:
         pass
 
+      try:
+        node_alias['group'] = node['group']
+      except:
+        pass
+
       if 'hostname' in node:
         node_alias['name'] = node['hostname']
       elif 'name' in node:

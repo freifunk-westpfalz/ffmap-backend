@@ -18,6 +18,7 @@ class Node():
     self.gateway = None
     self.addresses = None
     self.clientcount = 0
+    self.group = None
     self.lastseen = 0
     self.firstseen = 0
 

@@ -25,7 +25,8 @@ class D3MapBuilder:
                         'addresses': x.addresses,
                         'lastseen': x.lastseen,
                         'flags': x.flags,
-                        'clientcount': x.clientcount
+                        'clientcount': x.clientcount,
+			'group': x.group
                        } for x in nodes]
 
     links = self._db.get_links()
