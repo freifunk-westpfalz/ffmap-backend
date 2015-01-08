@@ -13,6 +13,7 @@ class NodeDB:
   # fetch list of links
   def get_links(self):
     self.update_vpn_links()
+    self.update_backbone_links()
     return self.reduce_links()
 
   # fetch list of nodes
@@ -232,6 +233,9 @@ class NodeDB:
       if 'vpn' in alias and alias['vpn'] and mac and node.interfaces and mac in node.interfaces:
         node.interfaces[mac].vpn = True
 
+      if 'group' in alias and alias['group'] == "backbone" and mac and node.interfaces and mac in node.interfaces:
+        node.interfaces[mac].backbone = True
+
       if 'gps' in alias:
         node.gps = alias['gps']
 
@@ -286,3 +290,18 @@ class NodeDB:
             changes += 1
 
           link.type = "vpn"
+
+  def update_backbone_links(self):
+    changes = 1
+    while changes > 0:
+      changes = 0
+      for link in self._links:
+        source_interface = self._nodes[link.source.id].interfaces[link.source.interface]
+        target_interface = self._nodes[link.target.id].interfaces[link.target.interface]
+        if source_interface.backbone or target_interface.backbone:
+          source_interface.backbone = True
+          target_interface.backbone = True
+          if link.type != "backbone":
+            changes += 1
+
+          link.type = "backbone"

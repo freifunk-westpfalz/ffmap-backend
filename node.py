@@ -37,4 +37,5 @@ class Node():
 class Interface():
   def __init__(self):
     self.vpn = False
+    self.backbone = False
 
