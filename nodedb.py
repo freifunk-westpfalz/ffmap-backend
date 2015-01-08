@@ -40,6 +40,7 @@ class NodeDB:
                  , 'autoupdater_state': node.autoupdater_state
                  , 'autoupdater_branch': node.autoupdater_branch
                  , 'batman': node.batman
+                 , 'batman_gwmode': node.batman_gwmode
                  , 'uptime': node.uptime
                  , 'gateway': node.gateway
                  , 'addresses': node.addresses
@@ -67,6 +68,7 @@ class NodeDB:
             node.autoupdater_state = n['autoupdater_state']
             node.autoupdater_branch = n['autoupdater_branch']
             node.batman = n['batman']
+            node.batman_gwmode = n['batman_gwmode']
             node.addresses = n['addresses']
             node.group = n['group']
             self._nodes.append(node)
@@ -253,6 +255,9 @@ class NodeDB:
 
       if 'batman' in alias:
         node.batman = alias['batman']
+
+      if 'batman_gwmode' in alias:
+        node.batman_gwmode = alias['batman_gwmode']
 
       if 'uptime' in alias:
         node.uptime = alias['uptime']

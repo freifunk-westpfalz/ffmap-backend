@@ -14,6 +14,7 @@ class Node():
     self.autoupdater_state = None
     self.autoupdater_branch = None
     self.batman = None
+    self.batman_gwmode = None
     self.uptime = None
     self.gateway = None
     self.addresses = None

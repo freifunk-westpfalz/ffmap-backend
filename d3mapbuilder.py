@@ -20,6 +20,7 @@ class D3MapBuilder:
                         'autoupdater_state': x.autoupdater_state,
                         'autoupdater_branch': x.autoupdater_branch,
                         'batman_version': x.batman,
+                        'batman_gwmode': x.batman_gwmode,
                         'uptime': x.uptime,
                         'gateway': x.gateway,
                         'addresses': x.addresses,

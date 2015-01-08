@@ -74,6 +74,11 @@ class alfred:
         pass
 
       try:
+        node_alias['batman_gwmode'] = node['software']['batman-adv']['gwmode']
+      except:
+        pass
+
+      try:
         node_alias['gateway'] = node['gateway']
       except:
         pass
