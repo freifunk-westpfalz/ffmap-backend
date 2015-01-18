@@ -13,7 +13,6 @@ class NodeDB:
   # fetch list of links
   def get_links(self):
     self.update_special_links()
-#    self.update_backbone_links()
     return self.reduce_links()
 
   # fetch list of nodes
@@ -303,20 +302,3 @@ class NodeDB:
             changes += 1
 
           link.type = "backbone"
-
-
-  def update_backbone_links(self):
-    changes = 1
-    while changes > 0:
-      changes = 0
-      for link in self._links:
-        source_interface = self._nodes[link.source.id].interfaces[link.source.interface]
-        target_interface = self._nodes[link.target.id].interfaces[link.target.interface]
-        if not source_interface.vpn or not target_interface.vpn:
-          if source_interface.backbone or target_interface.backbone:
-            source_interface.backbone = True
-            target_interface.backbone = True
-            if link.type != "backbone":
-              changes += 1
-
-            link.type = "backbone"
