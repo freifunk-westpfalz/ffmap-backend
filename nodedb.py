@@ -236,7 +236,8 @@ class NodeDB:
         node.interfaces[mac].vpn = True
 
       if 'group' in alias and alias['group'] == "backbone" and mac and node.interfaces and mac in node.interfaces:
-        node.interfaces[mac].backbone = True
+        for mac in node.macs:
+          node.interfaces[mac].backbone = True
 
       if 'gps' in alias:
         node.gps = alias['gps']
@@ -303,10 +304,11 @@ class NodeDB:
       for link in self._links:
         source_interface = self._nodes[link.source.id].interfaces[link.source.interface]
         target_interface = self._nodes[link.target.id].interfaces[link.target.interface]
-        if source_interface.backbone or target_interface.backbone:
-          source_interface.backbone = True
-          target_interface.backbone = True
-          if link.type != "backbone":
-            changes += 1
+        if not source_interface.vpn or not target_interface.vpn:
+          if source_interface.backbone or target_interface.backbone:
+            source_interface.backbone = True
+            target_interface.backbone = True
+            if link.type != "backbone":
+              changes += 1
 
-          link.type = "backbone"
+            link.type = "backbone"
