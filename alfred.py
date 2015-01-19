@@ -44,6 +44,11 @@ class alfred:
         pass
 
       try:
+        node_alias['gluon_base'] = node['software']['firmware']['base']
+      except:
+        pass
+
+      try:
         node_alias['clientcount'] = node['clients']['total']
       except:
         pass

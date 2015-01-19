@@ -36,6 +36,7 @@ class NodeDB:
                  , 'geo': node.gps
                  , 'hardware': node.hardware
                  , 'firmware': node.firmware
+                 , 'gluon_base': node.gluon_base
                  , 'autoupdater_state': node.autoupdater_state
                  , 'autoupdater_branch': node.autoupdater_branch
                  , 'batman': node.batman
@@ -64,6 +65,7 @@ class NodeDB:
             node.gps = n['geo']
             node.hardware = n['hardware']
             node.firmware = n['firmware']
+            node.gluon_base = n['gluon_base']
             node.autoupdater_state = n['autoupdater_state']
             node.autoupdater_branch = n['autoupdater_branch']
             node.batman = n['batman']
@@ -246,6 +248,9 @@ class NodeDB:
 
       if 'firmware' in alias:
         node.firmware = alias['firmware']
+
+      if 'gluon_base' in alias:
+        node.gluon_base = alias['gluon_base']
 
       if 'autoupdater_state' in alias:
         node.autoupdater_state = alias['autoupdater_state']

@@ -11,6 +11,7 @@ class Node():
     self.gps = None
     self.hardware = None
     self.firmware = None
+    self.gluon_base = None
     self.autoupdater_state = None
     self.autoupdater_branch = None
     self.batman = None
