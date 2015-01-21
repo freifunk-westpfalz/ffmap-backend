@@ -83,7 +83,7 @@ db.import_aliases(af.aliases())
 db.load_state(statefile)
 
 # remove nodes that have been offline for more than 30 days
-db.prune_offline(time.time() - 30*86400)
+db.prune_offline(time.time() - 90*86400)
 
 db.dump_state(statefile)
 
