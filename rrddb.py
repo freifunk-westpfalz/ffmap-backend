@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import subprocess
-import time
 import os
 from GlobalRRD import GlobalRRD
 from NodeRRD import NodeRRD
@@ -26,20 +25,16 @@ class rrd:
     self.displayTimeNode7d = displayTimeNode7d
     self.displayTimeNode30d = displayTimeNode30d
 
-    self.currentTimeInt = (int(time.time())/60)*60
-    self.currentTime    = str(self.currentTimeInt)
-
     try:
       os.stat(self.imagePath)
     except:
       os.mkdir(self.imagePath)
 
   def update_database(self,db):
-    nodes = db.get_nodes()
+    nodes = db.get_normal_nodes()
     clientCount = sum(map(lambda d: d.clientcount, nodes))
 
-    curtime = time.time() - 60
-    self.globalDb.update(len(list(filter(lambda x: x.lastseen >= curtime, nodes))), clientCount)
+    self.globalDb.update(len(nodes), clientCount)
     for node in nodes:
       rrd = NodeRRD(
         os.path.join(self.dbPath, str(node.id).replace(':', '') + '.rrd'),

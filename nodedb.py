@@ -8,6 +8,7 @@ class NodeDB:
   def __init__(self, time=0):
     self.time = time
     self._nodes = []
+    self._normalnodes = []
     self._links = []
 
   # fetch list of links
@@ -18,6 +19,13 @@ class NodeDB:
   # fetch list of nodes
   def get_nodes(self):
     return self._nodes
+
+  # fetch list of normal online nodes
+  def get_normal_nodes(self):
+    for node in self._nodes:
+      if node.group != "gateway" and node.group != "service" and node.flags['online'] == True:
+        self._normalnodes.append(node)
+    return self._normalnodes
 
   # remove all offlines nodes with lastseen < timestamp
   def prune_offline(self, timestamp):
