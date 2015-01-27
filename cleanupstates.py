@@ -17,7 +17,7 @@ for s in range(len(statefile)):
 
     for i in range(len(obj)):
         if (obj[i]["name"] == "" and
-            not obj[i]["uptime"]):
+            not obj[i]["hardware"]):
             obj.pop(i)
             break
 
