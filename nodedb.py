@@ -65,7 +65,7 @@ class NodeDB:
         for n in obj:
           try:
             node = self.maybe_node_by_id(n['id'])
-          except:
+          except KeyError:
             node = Node()
             node.id = n['id']
             node.name = n['name']
@@ -109,7 +109,7 @@ class NodeDB:
       if 'of' in x:
         try:
           node = self.maybe_node_by_mac((x['of'], x['secondary']))
-        except:
+        except KeyError:
           node = Node()
           node.lastseen = self.time
           node.firstseen = self.time
@@ -127,7 +127,7 @@ class NodeDB:
 
         try:
           node = self.maybe_node_by_mac((x['router'], ))
-        except:
+        except KeyError:
           node = Node()
           node.lastseen = self.time
           node.firstseen = self.time
@@ -138,15 +138,15 @@ class NodeDB:
         try:
           if 'neighbor' in x:
             try:
-              node = self.maybe_node_by_mac((x['neighbor']))
-            except:
+              node = self.maybe_node_by_mac((x['neighbor'], ))
+            except KeyError:
               continue
 
           if 'gateway' in x:
             x['neighbor'] = x['gateway']
 
           node = self.maybe_node_by_mac((x['neighbor'], ))
-        except:
+        except KeyError:
           node = Node()
           node.lastseen = self.time
           node.firstseen = self.time
@@ -166,7 +166,7 @@ class NodeDB:
 
           router = self.maybe_node_by_mac((x['router'], ))
           neighbor = self.maybe_node_by_mac((x['neighbor'], ))
-        except:
+        except KeyError:
           continue
 
         # filter TT links merged in previous step
@@ -189,7 +189,7 @@ class NodeDB:
       if 'primary' in x:
         try:
           node = self.maybe_node_by_mac((x['primary'], ))
-        except:
+        except KeyError:
           continue
 
         node.id = x['primary']
@@ -229,7 +229,7 @@ class NodeDB:
     for mac, alias in aliases.items():
       try:
         node = self.maybe_node_by_mac([mac])
-      except:
+      except KeyError:
         # create an offline node
         node = Node()
         node.add_mac(mac)
