@@ -53,6 +53,7 @@ class NodeDB:
                  , 'gateway': node.gateway
                  , 'addresses': node.addresses
                  , 'group': node.group
+                 , 'role': node.role
                  })
 
     open(filename, "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
@@ -80,6 +81,7 @@ class NodeDB:
             node.batman_gwmode = n['batman_gwmode']
             node.addresses = n['addresses']
             node.group = n['group']
+            node.role = n['role']
             self._nodes.append(node)
 
           if 'firstseen' in n:
@@ -286,6 +288,9 @@ class NodeDB:
 
       if 'group' in alias:
         node.group = alias['group']
+
+      if 'role' in alias:
+        node.role = alias['role']
 
   def mark_gateway(self, gateway):
     try:

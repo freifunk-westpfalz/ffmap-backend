@@ -103,6 +103,11 @@ class alfred:
       except:
         pass
 
+      try:
+        node_alias['role'] = node['system']['role']
+      except:
+        pass
+
       if 'hostname' in node:
         node_alias['name'] = node['hostname']
       elif 'name' in node:
