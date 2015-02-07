@@ -99,11 +99,6 @@ class alfred:
         pass
 
       try:
-        node_alias['group'] = node['group']
-      except:
-        pass
-
-      try:
         node_alias['role'] = node['system']['role']
       except:
         pass

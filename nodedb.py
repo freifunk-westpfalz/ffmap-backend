@@ -23,7 +23,7 @@ class NodeDB:
   # fetch list of normal online nodes
   def get_normal_nodes(self):
     for node in self._nodes:
-      if node.group != "gateway" and node.group != "service" and node.flags['online'] == True:
+      if node.role != "gateway" and node.role != "service" and node.flags['online'] == True:
         self._normalnodes.append(node)
     return self._normalnodes
 
@@ -52,7 +52,6 @@ class NodeDB:
                  , 'uptime': node.uptime
                  , 'gateway': node.gateway
                  , 'addresses': node.addresses
-                 , 'group': node.group
                  , 'role': node.role
                  })
 
@@ -80,7 +79,6 @@ class NodeDB:
             node.batman = n['batman']
             node.batman_gwmode = n['batman_gwmode']
             node.addresses = n['addresses']
-            node.group = n['group']
             node.role = n['role']
             self._nodes.append(node)
 
@@ -246,7 +244,7 @@ class NodeDB:
       if 'vpn' in alias and alias['vpn'] and mac and node.interfaces and mac in node.interfaces:
         node.interfaces[mac].vpn = True
 
-      if 'group' in alias and alias['group'] == "backbone" and mac and node.interfaces and mac in node.interfaces:
+      if 'role' in alias and alias['role'] == "backbone" and mac and node.interfaces and mac in node.interfaces:
         for mac in node.macs:
           node.interfaces[mac].backbone = True
 
@@ -285,9 +283,6 @@ class NodeDB:
 
       if 'id' in alias:
         node.id = alias['id']
-
-      if 'group' in alias:
-        node.group = alias['group']
 
       if 'role' in alias:
         node.role = alias['role']
