@@ -13,12 +13,6 @@ options = vars(args)
 statefile = options['statefile']
 
 for s in range(len(statefile)):
-    obj  = json.load(open(statefile[s]))
-
-    for i in range(len(obj)):
-        if (obj[i]["name"] == "" and
-            not obj[i]["hardware"]):
-            obj.pop(i)
-            break
-
-    open(statefile[s], "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
+    object  = json.load(open(statefile[s]))
+    newobject = [ node for node in object if node["name"] != "" and node["hardware"] != "" ]
+    open(statefile[s], "w").write( json.dumps(newobject, sort_keys=True, indent=4, separators=(',', ': ')) )
