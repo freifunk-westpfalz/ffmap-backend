@@ -52,7 +52,7 @@ class NodeDB:
                  , 'uptime': node.uptime
                  , 'gateway': node.gateway
                  , 'addresses': node.addresses
-                 , 'system': { 'role': node.system['role'] }
+                 , 'system': { 'role': node.system['role'], 'site_code': node.system['site_code'] }
                  })
 
     open(filename, "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
@@ -80,6 +80,7 @@ class NodeDB:
             node.batman_gwmode = n['batman_gwmode']
             node.addresses = n['addresses']
             node.system['role'] = n['system']['role']
+            node.system['site_code'] = n['system']['site_code']
             self._nodes.append(node)
 
           if 'firstseen' in n:
@@ -286,6 +287,9 @@ class NodeDB:
 
       if 'system_role' in alias:
         node.system['role'] = alias['system_role']
+
+      if 'system_sitecode' in alias:
+        node.system['site_code'] = alias['system_sitecode']
 
   def mark_gateway(self, gateway):
     try:

@@ -22,6 +22,7 @@ class Node():
     self.clientcount = 0
     self.system = dict({
       "role": None,
+      "site_code": None,
     })
     self.lastseen = 0
     self.firstseen = 0
