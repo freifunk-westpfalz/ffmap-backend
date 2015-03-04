@@ -99,7 +99,7 @@ class alfred:
         pass
 
       try:
-        node_alias['role'] = node['system']['role']
+        node_alias['system_role'] = node['system']['role']
       except:
         pass
 

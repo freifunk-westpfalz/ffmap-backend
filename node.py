@@ -20,7 +20,9 @@ class Node():
     self.gateway = None
     self.addresses = None
     self.clientcount = 0
-    self.role = None
+    self.system = dict({
+      "role": None,
+    })
     self.lastseen = 0
     self.firstseen = 0
 

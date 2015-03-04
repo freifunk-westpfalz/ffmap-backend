@@ -23,7 +23,7 @@ class NodeDB:
   # fetch list of normal online nodes
   def get_normal_nodes(self):
     for node in self._nodes:
-      if node.role != "gateway" and node.role != "service" and node.flags['online'] == True:
+      if node.system['role'] != "gateway" and node.system['role'] != "service" and node.flags['online'] == True:
         self._normalnodes.append(node)
     return self._normalnodes
 
@@ -52,7 +52,7 @@ class NodeDB:
                  , 'uptime': node.uptime
                  , 'gateway': node.gateway
                  , 'addresses': node.addresses
-                 , 'role': node.role
+                 , 'system': { 'role': node.system['role'] }
                  })
 
     open(filename, "w").write( json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': ')) )
@@ -79,7 +79,7 @@ class NodeDB:
             node.batman = n['batman']
             node.batman_gwmode = n['batman_gwmode']
             node.addresses = n['addresses']
-            node.role = n['role']
+            node.system['role'] = n['system']['role']
             self._nodes.append(node)
 
           if 'firstseen' in n:
@@ -244,7 +244,7 @@ class NodeDB:
       if 'vpn' in alias and alias['vpn'] and mac and node.interfaces and mac in node.interfaces:
         node.interfaces[mac].vpn = True
 
-      if 'role' in alias and alias['role'] == "backbone" and mac and node.interfaces and mac in node.interfaces:
+      if 'system_role' in alias and alias['system_role'] == "backbone" and mac and node.interfaces and mac in node.interfaces:
         for mac in node.macs:
           node.interfaces[mac].backbone = True
 
@@ -284,8 +284,8 @@ class NodeDB:
       if 'id' in alias:
         node.id = alias['id']
 
-      if 'role' in alias:
-        node.role = alias['role']
+      if 'system_role' in alias:
+        node.system['role'] = alias['system_role']
 
   def mark_gateway(self, gateway):
     try:
