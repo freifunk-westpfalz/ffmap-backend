@@ -1,8 +1,11 @@
 import os
 import subprocess
+import datetime
 
 from lib.RRD import DS, RRA, RRD
 
+now = datetime.datetime.now().strftime('%d.%m.%Y %H:%M')
+prettynow = now.replace(":", "\:")
 
 class NodeRRD(RRD):
     ds_list = [
@@ -18,6 +21,14 @@ class NodeRRD(RRD):
         RRA('AVERAGE', 0.5, 60, 720),
         #  1 year  of 12 hour   samples
         RRA('AVERAGE', 0.5, 720, 730),
+        # 2 hours of  1 minute samples
+        RRA('MAX', 0.5, 1, 120),
+        #  5 days  of  5 minute samples
+        RRA('MAX', 0.5, 5, 1440),
+        # 30 days  of  1 hour   samples
+        RRA('MAX', 0.5, 60, 720),
+        #  1 year  of 12 hour   samples
+        RRA('MAX', 0.5, 720, 730),
     ]
 
     def __init__(self, filename, node=None):
@@ -51,11 +62,20 @@ class NodeRRD(RRD):
                 '-h', '400',
                 '-l', '0',
                 '-y', '1:1',
+                '--slope-mode',
+                '--font', 'DEFAULT:7:',
+                '--lower-limit', '0',
+                '--right-axis', '1:0',
+                '--x-grid', 'MINUTE:10:HOUR:1:MINUTE:120:0:%R',
+                '--vertical-label', 'Anzahl Clients',
+                '--watermark=' 'Freifunk MWU',
                 'DEF:clients=' + self.filename + ':clients:AVERAGE',
-                'VDEF:maxc=clients,MAXIMUM',
-                'CDEF:c=0,clients,ADDNAN',
-                'CDEF:d=clients,UN,maxc,UN,1,maxc,IF,*',
-                'AREA:c#0F0:up\\l',
-                'AREA:d#F00:down\\l',
-                'LINE1:c#00F:clients connected\\l']
+                'AREA:clients#558020B0:Online Clients  ',
+                'LINE1:clients#558020',
+                'GPRINT:clients:LAST:now\: %4.0lf',
+                'GPRINT:clients:MIN:min\: %4.0lf',
+                'GPRINT:clients:AVERAGE:avg\: %4.0lf',
+                'GPRINT:clients:MAX:max\: %4.0lf\\l',
+                'COMMENT:Last Update\: ' + prettynow + '\\r',
+        ]
         subprocess.check_output(args)

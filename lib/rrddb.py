@@ -11,12 +11,16 @@ class RRD(object):
                  database_directory,
                  image_path,
                  display_time_global="7d",
+                 displayTimeGlobal30d = "30d",
+                 displayTimeGlobal365d = "365d",
                  display_time_node="1d"):
 
         self.dbPath = database_directory
         self.globalDb = GlobalRRD(self.dbPath)
         self.imagePath = image_path
         self.displayTimeGlobal = display_time_global
+        self.displayTimeGlobal30d = displayTimeGlobal30d
+        self.displayTimeGlobal365d = displayTimeGlobal365d
         self.displayTimeNode = display_time_node
 
         self.currentTimeInt = (int(time.time()) / 60) * 60
@@ -41,6 +45,10 @@ class RRD(object):
     def update_images(self):
         self.globalDb.graph(os.path.join(self.imagePath, "globalGraph.png"),
                             self.displayTimeGlobal)
+        self.globalDb.graph(os.path.join(self.imagePath, "globalGraph_30d.png"),
+                            self.displayTimeGlobal30d)
+        self.globalDb.graph(os.path.join(self.imagePath, "globalGraph_365d.png"),
+                            self.displayTimeGlobal365d)
 
         nodedb_files = os.listdir(self.dbPath)
 

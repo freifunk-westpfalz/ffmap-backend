@@ -1,8 +1,11 @@
 import os
 import subprocess
+import datetime
 
 from lib.RRD import DS, RRA, RRD
 
+now = datetime.datetime.now().strftime('%d.%m.%Y %H:%M')
+prettynow = now.replace(":", "\:")
 
 class GlobalRRD(RRD):
     ds_list = [
@@ -14,10 +17,20 @@ class GlobalRRD(RRD):
     rra_list = [
         # 2 hours of 1 minute samples
         RRA('AVERAGE', 0.5, 1, 120),
+        # 7 days og 1 hour samples
+        RRA('AVERAGE', 0.5, 60, 168),
         # 31 days  of 1 hour samples
         RRA('AVERAGE', 0.5, 60, 744),
         # ~5 years of 1 day samples
         RRA('AVERAGE', 0.5, 1440, 1780),
+        # 2 hours of 1 minute samples
+        RRA('MAX', 0.5, 1, 120),
+        # 7 days og 1 hour samples
+        RRA('MAX', 0.5, 60, 168),
+        # 31 days  of 1 hour samples
+        RRA('MAX', 0.5, 60, 744),
+        # ~5 years of 1 day samples
+        RRA('MAX', 0.5, 1440, 1780),
     ]
 
     def __init__(self, directory):
@@ -33,8 +46,24 @@ class GlobalRRD(RRD):
                 '-s', '-' + timeframe,
                 '-w', '800',
                 '-h' '400',
-                'DEF:nodes=' + self.filename + ':nodes:AVERAGE',
-                'LINE1:nodes#F00:nodes\\l',
+                '--font', 'DEFAULT:7:',
+                '--lower-limit', '0',
+                '--right-axis', '1:0',
+                '--vertical-label', 'Anzahl Clients/Nodes',
+                '--watermark=' 'Freifunk MWU',
                 'DEF:clients=' + self.filename + ':clients:AVERAGE',
-                'LINE2:clients#00F:clients']
+                'AREA:clients#558020B0:Online Clients  ',
+                'LINE1:clients#558020',
+                'GPRINT:clients:LAST:now\: %4.0lf',
+                'GPRINT:clients:MIN:min\: %4.0lf',
+                'GPRINT:clients:AVERAGE:avg\: %4.0lf',
+                'GPRINT:clients:MAX:max\: %4.0lf\\l',
+                'DEF:nodes=' + self.filename + ':nodes:AVERAGE',
+                'LINE2:nodes#1566A9:Online Nodes    ',
+                'GPRINT:nodes:LAST:now\: %4.0lf',
+                'GPRINT:nodes:MIN:min\: %4.0lf',
+                'GPRINT:nodes:AVERAGE:avg\: %4.0lf',
+                'GPRINT:nodes:MAX:max\: %4.0lf\\l',
+                'COMMENT:Last Update\: ' + prettynow + '\\r',
+        ]
         subprocess.check_output(args)
