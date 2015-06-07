@@ -10,7 +10,7 @@ WWWDIREXTERN="/var/www/meshviewer-extern-mwu"
 
 cd "$(dirname "$0")"/
 
-/usr/bin/python3 $WORKDIR/backend.py --with-rrd --prune 45 -m wiBAT:/var/run/alfred-wi.sock mzBAT:/var/run/alfred-mz.sock --vpn 02:00:0a:38:00:17 02:00:0a:38:00:05 02:00:0a:38:00:07 02:00:0a:38:00:d0 02:00:0a:38:00:e7 02:00:0a:25:00:17 02:00:0a:25:00:05 02:00:0a:25:00:07 02:00:0a:25:00:d0 02:00:0a:25:00:e7 -d $WORKDIR/data/
+/usr/bin/python3 $WORKDIR/backend.py --with-rrd --prune 45 -m wiBAT:/var/run/alfred-wi.sock mzBAT:/var/run/alfred-mz.sock --vpn 02:00:0a:38:00:17 02:00:0a:38:00:05 02:00:0a:38:00:07 02:00:0a:38:00:d0 02:00:0a:38:00:e7 02:00:0a:38:00:2a 02:00:0a:25:00:17 02:00:0a:25:00:05 02:00:0a:25:00:07 02:00:0a:25:00:d0 02:00:0a:25:00:e7 02:00:0a:25:00:2a -d $WORKDIR/data/
 
 /usr/bin/jq '.nodes = (.nodes | with_entries(del(.value.nodeinfo.owner)))' < $WORKDIR/data/nodes.json > $WORKDIR/data/nodes-internet.json
 cp -r $WORKDIR/data/* $WWWDIRINTERN/build/data/
