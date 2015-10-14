@@ -62,7 +62,6 @@ class NodeRRD(RRD):
                 '-h', '400',
                 '-l', '0',
                 '-y', '1:1',
-                '--slope-mode',
                 '--font', 'DEFAULT:7:',
                 '--lower-limit', '0',
                 '--right-axis', '1:0',
