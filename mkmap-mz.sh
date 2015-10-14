@@ -19,6 +19,3 @@ cp $WORKDIR/data/nodes-internet.json $WWWDIREXTERN/build/data/nodes.json
 cp $WORKDIR/data/graph.json $WWWDIREXTERN/build/data/
 cp $WORKDIR/data/nodelist.json $WWWDIREXTERN/build/data/
 cp -r $WORKDIR/data/nodes $WWWDIREXTERN/build/data/
-
-# Provide nodes.json in old ffmap-d3 format just for freifunk-karte.de
-/usr/bin/jq -n -f ffmap-d3.jq --argfile nodes data/nodes-internet.json --argfile graph data/graph.json > $WWWDIREXTERN/build/nodes.json
