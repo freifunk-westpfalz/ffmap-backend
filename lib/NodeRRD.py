@@ -71,8 +71,6 @@ class NodeRRD(RRD):
                 'DEF:clients=' + self.filename + ':clients:AVERAGE',
                 'AREA:clients#558020B0:Online Clients  ',
                 'LINE1:clients#558020',
-                'GPRINT:clients:LAST:now\: %4.0lf',
-                'GPRINT:clients:MIN:min\: %4.0lf',
                 'GPRINT:clients:AVERAGE:avg\: %4.0lf',
                 'GPRINT:clients:MAX:max\: %4.0lf\\l',
                 'COMMENT:Last Update\: ' + prettynow + '\\r',
