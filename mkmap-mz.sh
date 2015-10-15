@@ -4,9 +4,17 @@ set -e
 
 export PATH=/home/admin/bin:$PATH
 
-WORKDIR="/home/admin/clones/ffmap-backend-intern-mz"
+WORKDIR="/home/admin/clones/ffmap-backend-mz"
 WWWDIRINTERN="/var/www/meshviewer-intern-mz"
 WWWDIREXTERN="/var/www/meshviewer-extern-mz"
+
+if [ ! -d $WWWDIRINTERN/build/data ]; then
+  mkdir $WWWDIRINTERN/build/data
+fi
+
+if [ ! -d $WWWDIREXTERN/build/data ]; then
+  mkdir $WWWDIREXTERN/build/data
+fi
 
 cd "$(dirname "$0")"/
 
