@@ -4,9 +4,11 @@ set -e
 
 export PATH=/home/admin/bin:$PATH
 
-WORKDIR="/home/admin/clones/ffmap-backend-mz"
+WORKDIR="/home/admin/clones/ffmap-backend"
 WWWDIRINTERN="/var/www/meshviewer-intern-mz"
 WWWDIREXTERN="/var/www/meshviewer-extern-mz"
+CMNTYDATA="mz-data"
+CMNTYRRD="mz-rrd"
 
 if [ ! -d $WWWDIRINTERN/build/data ]; then
   mkdir $WWWDIRINTERN/build/data
@@ -18,12 +20,20 @@ fi
 
 cd "$(dirname "$0")"/
 
-/usr/bin/python3 $WORKDIR/backend.py --with-rrd --prune 45 -m mzBAT:/var/run/alfred-mz.sock --vpn 02:00:0a:25:00:17 02:00:0a:25:00:07 02:00:0a:25:00:d0 02:00:0a:25:00:e7 02:00:0a:25:00:2a -d $WORKDIR/data/
+# run map backend
+/usr/bin/python3 $WORKDIR/backend.py --with-rrd --with-img --rrd-path $CMNTYRRD --prune 45 -m mzBAT:/var/run/alfred-mz.sock --vpn 02:00:0a:25:00:17 02:00:0a:25:00:07 02:00:0a:25:00:d0 02:00:0a:25:00:e7 02:00:0a:25:00:2a -d $WORKDIR/$CMNTYDATA/
 
-/usr/bin/jq '.nodes = (.nodes | with_entries(del(.value.nodeinfo.owner)))' < $WORKDIR/data/nodes.json > $WORKDIR/data/nodes-internet.json
-cp -r $WORKDIR/data/* $WWWDIRINTERN/build/data/
+# remove contact info
+/usr/bin/jq '.nodes = (.nodes | map(del(.nodeinfo.owner)))' < $WORKDIR/$CMNTYDATA/nodes.json > $WORKDIR/$CMNTYDATA/nodes-internet.json
 
-cp $WORKDIR/data/nodes-internet.json $WWWDIREXTERN/build/data/nodes.json
-cp $WORKDIR/data/graph.json $WWWDIREXTERN/build/data/
-cp $WORKDIR/data/nodelist.json $WWWDIREXTERN/build/data/
-cp -r $WORKDIR/data/nodes $WWWDIREXTERN/build/data/
+# copy files to internal map
+cp $WORKDIR/$CMNTYDATA/nodes.json $WWWDIRINTERN/build/data/
+cp $WORKDIR/$CMNTYDATA/graph.json $WWWDIRINTERN/build/data/
+cp $WORKDIR/$CMNTYDATA/nodelist.json $WWWDIRINTERN/build/data/
+cp -r $WORKDIR/$CMNTYDATA/nodes $WWWDIRINTERN/build/data/
+
+# copy files to external map
+cp $WORKDIR/$CMNTYDATA/nodes-internet.json $WWWDIREXTERN/build/data/nodes.json
+cp $WORKDIR/$CMNTYDATA/graph.json $WWWDIREXTERN/build/data/
+cp $WORKDIR/$CMNTYDATA/nodelist.json $WWWDIREXTERN/build/data/
+cp -r $WORKDIR/$CMNTYDATA/nodes $WWWDIREXTERN/build/data/
