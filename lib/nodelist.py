@@ -7,8 +7,10 @@ def export_nodelist(now, nodedb):
         node_out["name"] = node["nodeinfo"]["hostname"]
 
         if "location" in node["nodeinfo"]:
-            node_out["position"] = {"lat": node["nodeinfo"]["location"]["latitude"],
-                                    "long": node["nodeinfo"]["location"]["longitude"]}
+            if "latitude" in node["nodeinfo"]["location"]:
+                if "longitude" in node["nodeinfo"]["location"]:
+                    node_out["position"] = {"lat": node["nodeinfo"]["location"]["latitude"],
+                                            "long": node["nodeinfo"]["location"]["longitude"]}
 
         node_out["status"] = dict()
         node_out["status"]["online"] = node["flags"]["online"]
