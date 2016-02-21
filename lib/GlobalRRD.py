@@ -50,7 +50,7 @@ class GlobalRRD(RRD):
                 '--lower-limit', '0',
                 '--right-axis', '1:0',
                 '--vertical-label', 'Anzahl Clients/Nodes',
-                '--watermark=' 'Freifunk MWU',
+                '--watermark=' 'Freifunk Westpfalz',
                 'DEF:clients=' + self.filename + ':clients:AVERAGE',
                 'AREA:clients#558020B0:Online Clients  ',
                 'LINE1:clients#558020',
